@@ -21,6 +21,7 @@ Firebase 프로젝트 `bs-science`가 `config.js`에 연결되어 있습니다. 
   "name": "디지털 현미경",
   "category": "생명과학",
   "quantity": 8,
+  "quantityKnown": true,
   "location": "과학실 A · 2번장",
   "detail": "USB 연결형 · 500배",
   "updatedAt": "2026-09-22T09:30:00+09:00"

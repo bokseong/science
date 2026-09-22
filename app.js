@@ -37,25 +37,30 @@ function itemMatches(item) {
 }
 
 function render() {
-  const filtered = state.items.filter(itemMatches);
+  const filtered = state.items
+    .filter(itemMatches)
+    .sort((a, b) => String(a.name || "").localeCompare(String(b.name || ""), "ko"));
   ui.summary.textContent = state.query || state.category !== "전체"
     ? `조건에 맞는 교구 ${filtered.length}개`
     : `전체 교구 ${filtered.length}개`;
   ui.empty.hidden = filtered.length !== 0;
   ui.grid.innerHTML = filtered.map((item) => {
     const quantity = Number(item.quantity) || 0;
-    const available = quantity > 0;
+    const quantityKnown = item.quantityKnown !== false;
+    const available = quantityKnown && quantity > 0;
+    const statusText = !quantityKnown ? "수량 미기재" : (available ? "보유 중" : "재고 없음");
+    const statusClass = !quantityKnown ? "unknown" : (available ? "" : "out");
     return `
       <article class="item-card">
         <div class="card-top">
           <span class="category">${escapeHtml(item.category || "미분류")}</span>
-          <span class="availability ${available ? "" : "out"}">${available ? "보유 중" : "재고 없음"}</span>
+          <span class="availability ${statusClass}">${statusText}</span>
         </div>
         <h3>${escapeHtml(item.name || "이름 없음")}</h3>
         <p class="item-detail">${escapeHtml(item.detail || "상세 정보 없음")}</p>
         <div class="card-bottom">
           <span class="location">${escapeHtml(item.location || "위치 미등록")}</span>
-          <span class="quantity"><strong>${quantity}</strong><span>보유 수량</span></span>
+          <span class="quantity"><strong>${quantityKnown ? quantity : "—"}</strong><span>${quantityKnown ? "보유 수량" : "수량 확인 필요"}</span></span>
         </div>
       </article>`;
   }).join("");
@@ -67,7 +72,9 @@ function setConnectionStatus(type, text) {
 }
 
 function setLastUpdated(items) {
-  const timestamps = items.map(item => new Date(item.updatedAt)).filter(date => !Number.isNaN(date.getTime()));
+  const timestamps = items
+    .map(item => item.updatedAt?.toDate ? item.updatedAt.toDate() : new Date(item.updatedAt))
+    .filter(date => !Number.isNaN(date.getTime()));
   if (!timestamps.length) {
     ui.lastUpdated.textContent = "마지막 업데이트: 기록 없음";
     return;
