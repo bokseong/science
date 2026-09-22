@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="학교 실험 교구의 보유 현황과 보관 장소를 검색합니다.">
+  <title>Science Stock | 실험 교구 재고 검색</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Science Stock 홈">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" role="img"><path d="M12 3h8v2l-1.5 1.5v6.2l6.9 11.2A3.3 3.3 0 0 1 22.6 29H9.4a3.3 3.3 0 0 1-2.8-5.1l6.9-11.2V6.5L12 5V3Z"/><path class="liquid" d="M10 22c3.6 1.2 7.3-2.2 12-.4l2.2 3.6c.8 1.3-.1 2.8-1.6 2.8H9.4c-1.5 0-2.4-1.5-1.6-2.8L10 22Z"/></svg>
+      </span>
+      <span>SCIENCE STOCK</span>
+    </a>
+    <span class="status-pill" id="dataStatus"><span class="status-dot"></span>데이터 확인 중</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <p class="eyebrow">SCHOOL LAB INVENTORY</p>
+      <h1 id="heroTitle">필요한 실험 교구를<br><span>빠르게 찾아보세요.</span></h1>
+      <p class="hero-copy">물품명이나 분류를 검색하면 현재 보유 수량과 보관 장소를 확인할 수 있습니다.</p>
+
+      <form class="search-panel" id="searchForm" role="search">
+        <label class="search-box" for="searchInput">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+          <input id="searchInput" type="search" placeholder="예: 비커, 현미경, 전기 측정" autocomplete="off">
+          <button class="clear-button" id="clearButton" type="button" aria-label="검색어 지우기" hidden>×</button>
+        </label>
+        <button class="search-button" type="submit">검색</button>
+      </form>
+
+      <div class="quick-filters" aria-label="빠른 분류 선택">
+        <button type="button" data-category="전체" class="active">전체</button>
+        <button type="button" data-category="화학">화학</button>
+        <button type="button" data-category="생명과학">생명과학</button>
+        <button type="button" data-category="물리">물리</button>
+        <button type="button" data-category="지구과학">지구과학</button>
+      </div>
+    </section>
+
+    <section class="inventory" aria-labelledby="inventoryTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">INVENTORY</p>
+          <h2 id="inventoryTitle">교구 보유 현황</h2>
+        </div>
+        <p id="resultSummary" aria-live="polite">데이터를 불러오는 중입니다.</p>
+      </div>
+
+      <div class="notice" id="notice" hidden></div>
+      <div class="loading-grid" id="loadingGrid" aria-label="데이터 로딩 중">
+        <div></div><div></div><div></div>
+      </div>
+      <div class="card-grid" id="itemGrid"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <div aria-hidden="true">⌕</div>
+        <h3>검색 결과가 없습니다</h3>
+        <p>다른 물품명이나 분류로 다시 검색해 보세요.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>재고 정보는 마지막 동기화 시점을 기준으로 표시됩니다.</p>
+    <p id="lastUpdated">마지막 업데이트: 확인 중</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
